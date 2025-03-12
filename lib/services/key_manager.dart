@@ -104,8 +104,8 @@ class KeyManager {
     String? privateKey;
     String? publicKey = prefs.getString('publicKey');
 
-    privateKey = prefs.getString('privateKey') ?? "";
-    privateKey = await _solosafe_secure_enclave.decryptValue(privateKey);
+    privateKey = prefs.getString('privateKey');
+    privateKey = await _solosafe_secure_enclave.decryptValue(privateKey ?? '');
 
     return {
       'privateKey': privateKey,
