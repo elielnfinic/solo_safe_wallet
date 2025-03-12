@@ -320,6 +320,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.1"
+  json_annotation:
+    dependency: transitive
+    description:
+      name: json_annotation
+      sha256: "1ce844379ca14835a50d2f019a3099f419082cfdd231cd86a142af94dd5c6bb1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.9.0"
   json_rpc_2:
     dependency: transitive
     description:
@@ -576,6 +584,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  secure_enclave:
+    dependency: "direct main"
+    description:
+      name: secure_enclave
+      sha256: "7d8ffa47e45577ed64de3250847d5b85622365ce21addfd3203ddbfea2ccd6c7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
   shared_preferences:
     dependency: "direct main"
     description:

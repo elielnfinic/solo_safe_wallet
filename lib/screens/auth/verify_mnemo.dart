@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import '../../services/key_generation.dart';
+import '../../services/key_manager.dart';
 
 class VerifyMnemoPage extends StatefulWidget {
   @override
@@ -22,11 +22,12 @@ class _VerifyMnemoPageState extends State<VerifyMnemoPage> {
   }
 
   Future<void> generateKeys() async {
-    final mnemonic = await KeyGeneration.generateMnemonic();
-    final privateKey = await KeyGeneration.generatePrivateKey(mnemonic);
-    final publicKey = await KeyGeneration.generatePublicKey(privateKey);
+    final mnemonic = await KeyManager.generateMnemonic();
+    final privateKey = await KeyManager.generatePrivateKey(mnemonic);
+    final publicKey = await KeyManager.generatePublicKey(privateKey);
 
-    await KeyGeneration.saveKeys(privateKey, publicKey);
+    final keyManager = KeyManager();
+    await keyManager.saveKeys(privateKey, publicKey);
 
     setState(() {
       _mnemonic = mnemonic;

@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart'; // Add the fluttertoast package
 import 'package:solosafe/screens/auth/restore_wallet.dart';
 import 'package:solosafe/screens/home_page/home_page.dart';
 import 'package:solosafe/screens/auth/verify_mnemo.dart';
-import '../../services/key_generation.dart';
+import '../../services/key_manager.dart';
 
 class CreateWalletPage extends StatefulWidget {
   static const String routeName = '/create_wallet';
@@ -28,14 +28,15 @@ class _CreateWalletPageState extends State<CreateWalletPage> {
 
   Future<void> generateKeys() async {
     // Generate the mnemonic
-    final mnemonic = await KeyGeneration.generateMnemonic();
+    final mnemonic = await KeyManager.generateMnemonic();
 
     // Generate private and public keys
-    final privateKey = await KeyGeneration.generatePrivateKey(mnemonic);
-    final publicKey = await KeyGeneration.generatePublicKey(privateKey);
+    final privateKey = await KeyManager.generatePrivateKey(mnemonic);
+    final publicKey = await KeyManager.generatePublicKey(privateKey);
 
     // Save the keys into SharedPreferences
-    await KeyGeneration.saveKeys(privateKey, publicKey);
+    final keyManager = KeyManager();
+    await keyManager.saveKeys(privateKey, publicKey);
 
     setState(() {
       _mnemonic = mnemonic;
