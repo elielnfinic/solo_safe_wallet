@@ -7,22 +7,64 @@ import 'package:secure_enclave/secure_enclave.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// class SoloSafeSecureEnclave{
-//   final tag = 'keys';
-//   final password = 'password';
-//   var secureEnclave;
+abstract class SoloSafeSecureEnclaveInterface {
+  Future<SecureEnclave> getSecureEnclave();
+}
 
-//   _createSecureEnclave() async {
-//     secureEnclave = SecureEnclave();
-//     final is_secure_enclave_created = await secureEnclave.isKeyCreated(tag: tag) ?? false;
-    
-//   }
+class SoloSafeSecureEnclave implements SoloSafeSecureEnclaveInterface {
+  final tag = 'keys';
+  final password = 'password';
+  var secureEnclave;
 
-//   getSecureEnclave(){
+  _add_enclave_tag() async {
+    if (secureEnclave == null) secureEnclave = SecureEnclave();
+    final is_secure_enclave_created =
+        (await secureEnclave.isKeyCreated(tag: tag)).value ?? false;
+    if (is_secure_enclave_created) {
+      return;
+    } else {
+      final res = await secureEnclave.generateKeyPair(
+          accessControl: AccessControlModel(
+              tag: tag,
+              password: password,
+              options: [
+            AccessControlOption.applicationPassword,
+            AccessControlOption.privateKeyUsage
+          ]));
+      if (res.error != null) {
+        throw Exception('Error adding secure enclave tag');
+      }
+    }
+  }
 
-//     return SecureEnclave();
-//   }
-// }
+  Future<SecureEnclave> getSecureEnclave() async {
+    await _add_enclave_tag();
+    return secureEnclave;
+  }
+
+  Future<String> encryptValue(String value) async {
+    final _secure_enclave = await getSecureEnclave();
+    final _s_e_encrypted_value =
+        (await _secure_enclave.encrypt(message: value, tag: tag)).value;
+    if (_s_e_encrypted_value == null) {
+      throw Exception(
+          'Error encrypting value, unable to encrypt value with secure enclave');
+    }
+    return hex.encode(_s_e_encrypted_value);
+  }
+
+  Future<String> decryptValue(String value) async {
+    final _secure_enclave = await getSecureEnclave();
+    final _s_e_decrypted_value = (await _secure_enclave.decrypt(
+            message: Uint8List.fromList(hex.decode(value)), tag: tag))
+        .value;
+    if (_s_e_decrypted_value == null) {
+      throw Exception(
+          'Error decrypting value, unable to decrypt value with secure enclave');
+    }
+    return _s_e_decrypted_value;
+  }
+}
 
 class KeyManager {
   // Generate a mnemonic
@@ -44,106 +86,31 @@ class KeyManager {
     return publicKey.hex;
   }
 
-  static Future<ResultModel> get_sec_enclave() async{
-    final _secure_enclave = SecureEnclave();
-    final tag = 'keys';
-    final password = 'password'; //will prompt the user to input their password 
-    final tag_created = (await _secure_enclave.isKeyCreated(tag: tag)).value ?? false;
-    ResultModel _secure_enclave_res;
-    if(!tag_created){
-      _secure_enclave_res = await _secure_enclave.generateKeyPair(
-        accessControl: AccessControlModel(
-          tag: tag, 
-          password: password,
-          options: [
-            AccessControlOption.applicationPassword,
-            AccessControlOption.privateKeyUsage
-          ]
-        )   
-      );
-    } else {
-      _secure_enclave_res = await _secure_enclave.getPublicKey(tag: tag, password: 'password');
-    }
-    return _secure_enclave_res;
-  }
-
   // Save the keys into SharedPreferences
   Future<void> saveKeys(String privateKey, String publicKey) async {
-    final _secure_enclave = SecureEnclave();
-    final tag = 'keys';
-    final password = 'password'; //will prompt the user to input their password
-    final tag_created = (await _secure_enclave.isKeyCreated(tag: tag)).value ?? false;
-    ResultModel _secure_enclave_res;
-    if(!tag_created){
-      _secure_enclave_res = await _secure_enclave.generateKeyPair(
-        accessControl: AccessControlModel(
-          tag: tag, 
-          password: password,
-          options: [
-            AccessControlOption.applicationPassword,
-            AccessControlOption.privateKeyUsage
-          ]
-        )   
-      );
-    } else {
-      _secure_enclave_res = await _secure_enclave.getPublicKey(tag: tag, password: 'password');
-    }
-    
-    if(_secure_enclave_res.error != null) {
-      print(_secure_enclave_res.error);
-      throw Exception('Error saving keys, unable to generate key pair with secure enclave');    
-    } else {
-      final _s_e_public_key = _secure_enclave_res.value; // _s_e : secure enclave
-      
-      final _s_e_encrypted_private_key = (await _secure_enclave.encrypt(message: privateKey, tag: tag)).value;
-      if(_s_e_encrypted_private_key == null) {
-        throw Exception('Error saving keys, unable to encrypt private key with secure enclave');
-      }
-      final hex_s_e_encrypted_private_key = hex.encode(_s_e_encrypted_private_key);
-
-      final prefs = await SharedPreferences.getInstance();      
-      await prefs.setString('publicKey', publicKey);
-      await prefs.setString('privateKey', hex_s_e_encrypted_private_key);
-    }
-    
+    final _solosafe_secure_enclave = await SoloSafeSecureEnclave();
+    final _encrypted_key =
+        await _solosafe_secure_enclave.encryptValue(privateKey);
+    final prefs = await SharedPreferences.getInstance();
+    print("Private key is $privateKey");
+    print("Encrypted private key is $_encrypted_key");
+    await prefs.setString('publicKey', publicKey);
+    await prefs.setString('privateKey', _encrypted_key);
   }
 
   // Retrieve saved keys
   static Future<Map<String, String>> getKeys() async {
-    final _secure_enclave = SecureEnclave();
-    final tag = 'keys';
-    final password = 'password'; //will prompt the user to input their password
-    final tag_created = (await _secure_enclave.isKeyCreated(tag: tag)).value ?? false;
-    ResultModel _secure_enclave_res;
-    if(!tag_created){
-      _secure_enclave_res = await _secure_enclave.generateKeyPair(
-        accessControl: AccessControlModel(
-          tag: tag, 
-          password: password,
-          options: [
-            AccessControlOption.applicationPassword,
-            AccessControlOption.privateKeyUsage
-          ]
-        )   
-      );
-    } else {
-      _secure_enclave_res = await _secure_enclave.getPublicKey(tag: tag, password: 'password');
-    }
+    final _solosafe_secure_enclave = await SoloSafeSecureEnclave();
 
     final prefs = await SharedPreferences.getInstance();
     String? privateKey;
     String? publicKey = prefs.getString('publicKey');
 
-    if(_secure_enclave_res.error != null) {
-      print(_secure_enclave_res.error);
-      throw Exception('Error getting keys, unable to generate key pair with secure enclave');    
-    } else {
-      
-      privateKey = prefs.getString('privateKey') ?? "";      
-      privateKey = (await _secure_enclave.decrypt(message: Uint8List.fromList(hex.decode(privateKey)), tag: tag)).value;
-    }
+    privateKey = prefs.getString('privateKey') ?? "";
+    print("\n====\nEncrypted Private key is $privateKey");
+    privateKey = await _solosafe_secure_enclave.decryptValue(privateKey);
+    print("Decrypted private key is $privateKey");
 
-    
     return {
       'privateKey': privateKey ?? '',
       'publicKey': publicKey ?? '',

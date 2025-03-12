@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:solosafe/routes/app_routes.dart';
 import 'package:solosafe/services/eth_service.dart';
+import 'package:solosafe/services/key_manager.dart';
 import 'package:web3dart/web3dart.dart';
 
 class YourWallet extends StatefulWidget {
@@ -26,8 +27,9 @@ class _YourWalletState extends State<YourWallet> {
 
   _loadPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String publicKey = prefs.getString("public_key") ?? "";
-    print("The public KEY is $publicKey");
+    String publicKey = prefs.getString("publicKey") ?? "";
+    String privateKey = prefs.getString("privateKey") ?? ""; 
+    
 
     // Ensure the getBalance method is awaited and the result is handled correctly
     final balance = await ethService.getBalance(publicKey);
