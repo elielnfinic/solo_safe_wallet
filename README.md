@@ -9,9 +9,9 @@ Trustworthy and secure.
 
 ## Features
 
-- [] Bridge between offline and online assets
-- [] Unreplicable device ID 
-- [] Zero-knowledge proof
-- [] Supports bluetooth, NFC, QR code
-- [] Supports AirDrop
+- [ ] Bridge between offline and online assets
+- [ ] Unreplicable device ID 
+- [ ] Zero-knowledge proof
+- [ ] Supports bluetooth, NFC, QR code
+- [ ] Supports AirDrop
 
