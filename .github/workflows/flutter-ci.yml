@@ -20,6 +20,8 @@ jobs :
           flutter-version : '3.27.1'
       - name: Install dependencies 
         run: flutter pub get 
+      - name: Create .env file
+        run: echo "ETH_RPC_SERVER=https://eth-mainnet.public.blastapi.io" > .env
       - name: Run tests 
         run: flutter test
       - name: Analyze code 
