@@ -1,16 +1,17 @@
-# solosafe
+# SoloSafe
 
-A new Flutter project.
+<div style="text-align:center">
+<img src="./solosafe_cover.png" max-width="500" min-width="200"/>
+</div>
 
-## Getting Started
+Allow offline assets transfer.  
+Trustworthy and secure.  
 
-This project is a starting point for a Flutter application.
+## Features
 
-A few resources to get you started if this is your first Flutter project:
+- [] Bridge between offline and online assets
+- [] Unreplicable device ID 
+- [] Zero-knowledge proof
+- [] Supports bluetooth, NFC, QR code
+- [] Supports AirDrop
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
