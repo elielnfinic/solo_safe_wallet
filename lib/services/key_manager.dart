@@ -92,8 +92,6 @@ class KeyManager {
     final _encrypted_key =
         await _solosafe_secure_enclave.encryptValue(privateKey);
     final prefs = await SharedPreferences.getInstance();
-    print("Private key is $privateKey");
-    print("Encrypted private key is $_encrypted_key");
     await prefs.setString('publicKey', publicKey);
     await prefs.setString('privateKey', _encrypted_key);
   }
@@ -107,12 +105,10 @@ class KeyManager {
     String? publicKey = prefs.getString('publicKey');
 
     privateKey = prefs.getString('privateKey') ?? "";
-    print("\n====\nEncrypted Private key is $privateKey");
     privateKey = await _solosafe_secure_enclave.decryptValue(privateKey);
-    print("Decrypted private key is $privateKey");
 
     return {
-      'privateKey': privateKey ?? '',
+      'privateKey': privateKey,
       'publicKey': publicKey ?? '',
     };
   }
