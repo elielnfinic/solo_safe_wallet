@@ -4,11 +4,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:solosafe/start/check_private_key.dart';
 
 Future main() async {
-  await dotenv.load(fileName: ".env");
+  await dotenv.load(fileName: '.env');
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class SoloSafe extends StatelessWidget {
+  const SoloSafe({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
