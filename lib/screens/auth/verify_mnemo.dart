@@ -25,7 +25,7 @@ class _VerifyMnemoPageState extends State<VerifyMnemoPage> {
   Future<void> generateKeys() async {
     final mnemonic = await KeyManager.generateMnemonic();
     final privateKey = await KeyManager.generatePrivateKey(mnemonic);
-    final publicKey = await KeyManager.generatePublicKey(privateKey);
+    final publicKey = KeyManager.generatePublicKey(privateKey);
 
     final keyManager = KeyManager();
     await keyManager.saveKeys(privateKey, publicKey);
