@@ -29,7 +29,7 @@ class _CreateWalletPageState extends State<CreateWalletPage> {
 
     // Generate private and public keys
     final privateKey = await KeyManager.generatePrivateKey(mnemonic);
-    final publicKey = await KeyManager.generatePublicKey(privateKey);
+    final publicKey = KeyManager.generatePublicKey(privateKey);
 
     // Save the keys into SharedPreferences
     final keyManager = KeyManager();
