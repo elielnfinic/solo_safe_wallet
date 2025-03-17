@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import '../../services/key_manager.dart';
 
 class VerifyMnemoPage extends StatefulWidget {
+  const VerifyMnemoPage({super.key});
+
   @override
-  _VerifyMnemoPageState createState() => _VerifyMnemoPageState();
+  State<VerifyMnemoPage> createState() => _VerifyMnemoPageState();
 }
 
 class _VerifyMnemoPageState extends State<VerifyMnemoPage> {
-  String _mnemonic = "";
-  String _privateKey = "";
-  String _publicKey = "";
-  Map<int, String> _verificationWords = {};
-  List<int> _positionsToVerify = [];
+  final String _mnemonic = '';
+
+  final Map<int, String> _verificationWords = {};
+  final List<int> _positionsToVerify = [];
   final Map<int, TextEditingController> _controllers = {};
 
   @override
@@ -29,11 +30,11 @@ class _VerifyMnemoPageState extends State<VerifyMnemoPage> {
     final keyManager = KeyManager();
     await keyManager.saveKeys(privateKey, publicKey);
 
-    setState(() {
-      _mnemonic = mnemonic;
-      _privateKey = privateKey;
-      _publicKey = publicKey;
-    });
+    // setState(() {
+    //   _mnemonic = mnemonic;
+    //   _privateKey = privateKey;
+    //   _publicKey = publicKey;
+    // });
 
     generateVerificationWords();
   }
@@ -82,14 +83,14 @@ class _VerifyMnemoPageState extends State<VerifyMnemoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Crypto Wallet Authentication")),
+      appBar: AppBar(title: Text('Crypto Wallet Authentication')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              "Verify Mnemonic Phrase:",
+              'Verify Mnemonic Phrase:',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
@@ -100,7 +101,7 @@ class _VerifyMnemoPageState extends State<VerifyMnemoPage> {
                   child: TextField(
                     controller: _controllers[position],
                     decoration: InputDecoration(
-                      labelText: "Enter word #${position + 1}",
+                      labelText: 'Enter word #${position + 1}',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -110,17 +111,16 @@ class _VerifyMnemoPageState extends State<VerifyMnemoPage> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: _verifyMnemonic,
-              child: Text("Verify Mnemonic"),
+              child: Text('Verify Mnemonic'),
             ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 // Proceed to the next step
               },
-              child: Text("Proceed"),
+              child: Text('Proceed'),
             ),
             // Show the mnemonic
-            
           ],
         ),
       ),

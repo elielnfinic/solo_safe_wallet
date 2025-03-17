@@ -1,11 +1,12 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class SendOfflinePage extends StatefulWidget {
+  const SendOfflinePage({super.key});
+
   @override
-  _SendOfflinePageState createState() => _SendOfflinePageState();
+  State<SendOfflinePage> createState() => _SendOfflinePageState();
 }
 
 class _SendOfflinePageState extends State<SendOfflinePage> {
@@ -35,7 +36,7 @@ class _SendOfflinePageState extends State<SendOfflinePage> {
         });
       }
     } catch (e) {
-      print("Error connecting to server: $e");
+      print('Error connecting to server: $e');
       if (mounted) {
         setState(() {
           isConnecting = false;
