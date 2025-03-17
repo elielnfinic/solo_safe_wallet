@@ -4,12 +4,14 @@ import 'package:solosafe/routes/app_routes.dart';
 import 'package:solosafe/services/eth_service.dart';
 import 'package:web3dart/web3dart.dart';
 
-class YourWallet extends StatefulWidget {
+class Wallet extends StatefulWidget {
+  const Wallet({super.key});
+
   @override
-  _YourWalletState createState() => _YourWalletState();
+  State<Wallet> createState() => _Wallettate();
 }
 
-class _YourWalletState extends State<YourWallet> {
+class _Wallettate extends State<Wallet> {
   String _address = '';
   bool _showFullAddress = false;
 
@@ -26,8 +28,7 @@ class _YourWalletState extends State<YourWallet> {
 
   _loadPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String publicKey = prefs.getString("publicKey") ?? "";
-    String privateKey = prefs.getString("privateKey") ?? "";
+    String publicKey = prefs.getString('publicKey') ?? '';
 
     // Ensure the getBalance method is awaited and the result is handled correctly
     final balance = await ethService.getBalance(publicKey);
@@ -45,8 +46,8 @@ class _YourWalletState extends State<YourWallet> {
   String _shortenAddress(String address) {
     if (_showFullAddress) return address;
     return address.isNotEmpty
-        ? "${address.substring(0, 3)}...${address.substring(address.length - 4)}"
-        : "";
+        ? '${address.substring(0, 3)}...${address.substring(address.length - 4)}'
+        : '';
   }
 
   @override
@@ -69,7 +70,7 @@ class _YourWalletState extends State<YourWallet> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Your Wallet",
+                'Your Wallet',
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -83,7 +84,7 @@ class _YourWalletState extends State<YourWallet> {
                   });
                 },
                 child: Text(
-                  "Address: ${_shortenAddress(_address)}",
+                  'Address: ${_shortenAddress(_address)}',
                   style: TextStyle(fontSize: 16, color: Colors.white70),
                 ),
               ),
@@ -92,11 +93,11 @@ class _YourWalletState extends State<YourWallet> {
                 Row(
                   children: [
                     Text(
-                      "Online balance :  ",
+                      'Online balance : ',
                       style: TextStyle(color: Colors.white70),
                     ),
                     Text(
-                      "$_onlineBalance ETH",
+                      '$_onlineBalance ETH',
                       style: TextStyle(
                           fontSize: 19,
                           fontWeight: FontWeight.bold,
@@ -119,11 +120,11 @@ class _YourWalletState extends State<YourWallet> {
                 Row(
                   children: [
                     Text(
-                      "Offline balance :  ",
+                      'Offline balance :  ',
                       style: TextStyle(color: Colors.white70),
                     ),
                     Text(
-                      "$_offlineBalance ETH",
+                      '$_offlineBalance ETH',
                       style: TextStyle(
                           fontSize: 19,
                           fontWeight: FontWeight.bold,
