@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:solosafe/screens/offline_transactions/send/manual_input.dart';
+import 'package:solosafe/screens/offline_transactions/send/send_money.dart';
 
 class SendOfflinePage extends StatefulWidget {
   const SendOfflinePage({super.key});
