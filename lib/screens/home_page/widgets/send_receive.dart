@@ -1,40 +1,40 @@
 import 'package:flutter/material.dart';
 
-class SendReceive extends StatelessWidget{
-  final String send_type;
+class SendReceive extends StatelessWidget {
+  final String sendType;
 
-  SendReceive({required this.send_type});
+  const SendReceive({super.key, required this.sendType});
 
   @override
-  Widget build(BuildContext context){
-    return Container(
-      child: Row(children: [
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
         Expanded(
           child: ElevatedButton(
             onPressed: () {
-              if(send_type == "online"){
+              if (sendType == 'online') {
                 Navigator.pushNamed(context, '/send_online');
-              }else {
+              } else {
                 Navigator.pushNamed(context, '/send_offline');
               }
             },
-            child: Text("Send", style: TextStyle(color: Colors.black87)),
+            child: Text('Send', style: TextStyle(color: Colors.black87)),
           ),
         ),
         SizedBox(width: 10),
         Expanded(
           child: ElevatedButton(
             onPressed: () {
-              if(send_type == "online"){
+              if (sendType == 'online') {
                 Navigator.pushNamed(context, '/receive_online');
               } else {
                 Navigator.pushNamed(context, '/receive_offline');
               }
             },
-            child: Text("Receive", style: TextStyle(color: Colors.black87)),
+            child: Text('Receive', style: TextStyle(color: Colors.black87)),
           ),
         ),
-      ],),
+      ],
     );
   }
 }

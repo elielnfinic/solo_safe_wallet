@@ -43,7 +43,7 @@ class _LatestTransactionsState extends State<LatestTransactions> {
                     children: [
                       SizedBox(height: 15),
                       SendReceive(
-                        send_type: 'offline',
+                        sendType: 'offline',
                       ),
                       SizedBox(height: 15),
                       Expanded(
@@ -82,7 +82,7 @@ class _LatestTransactionsState extends State<LatestTransactions> {
                     children: [
                       SizedBox(height: 15),
                       SendReceive(
-                        send_type: 'online',
+                        sendType: 'online',
                       ),
                       SizedBox(height: 15),
                       Expanded(

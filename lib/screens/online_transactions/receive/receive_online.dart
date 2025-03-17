@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:flutter/services.dart';  // For Clipboard
+
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:clipboard/clipboard.dart';  // Using clipboard package
+import 'package:clipboard/clipboard.dart'; // Using clipboard package
 
 class ReceiveCryptoPage extends StatefulWidget {
+  const ReceiveCryptoPage({super.key});
+
   @override
-  _ReceiveCryptoPageState createState() => _ReceiveCryptoPageState();
+  State<ReceiveCryptoPage> createState() => _ReceiveCryptoPageState();
 }
 
 class _ReceiveCryptoPageState extends State<ReceiveCryptoPage> {
@@ -29,9 +31,11 @@ class _ReceiveCryptoPageState extends State<ReceiveCryptoPage> {
   // Copy wallet address to clipboard
   void _copyAddress() {
     FlutterClipboard.copy(walletAddress).then((value) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Address copied to clipboard!')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Address copied to clipboard!')),
+        );
+      }
     });
   }
 
@@ -50,7 +54,7 @@ class _ReceiveCryptoPageState extends State<ReceiveCryptoPage> {
             SizedBox(height: 20),
             // Wallet Address Display
             Text(
-              "Your Wallet Address",
+              'Your Wallet Address',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -59,7 +63,7 @@ class _ReceiveCryptoPageState extends State<ReceiveCryptoPage> {
             ),
             SizedBox(height: 10),
             GestureDetector(
-              onTap: _copyAddress,  // Tap to copy address
+              onTap: _copyAddress, // Tap to copy address
               child: Text(
                 walletAddress,
                 style: TextStyle(
@@ -71,14 +75,14 @@ class _ReceiveCryptoPageState extends State<ReceiveCryptoPage> {
             ),
             SizedBox(height: 10),
             Center(
-              child: ElevatedButton(child: Text("copy Address"),
-              onPressed: _copyAddress,)
-              
-            ),
+                child: ElevatedButton(
+              onPressed: _copyAddress,
+              child: Text('copy Address'),
+            )),
             SizedBox(height: 40),
             // QR Code Display
             Text(
-              "Scan the QR Code to send crypto",
+              'Scan the QR Code to send crypto',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),

@@ -2,15 +2,18 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class UploadAssetPage extends StatefulWidget {
+  const UploadAssetPage({super.key});
+
   @override
-  _UploadAssetPageState createState() => _UploadAssetPageState();
+  State<UploadAssetPage> createState() => _UploadAssetPageState();
 }
 
 class _UploadAssetPageState extends State<UploadAssetPage> {
   int currentStep = 0; // To track the current progress
-  final TextEditingController _amountController = TextEditingController(); // Controller for amount input
+  final TextEditingController _amountController =
+      TextEditingController(); // Controller for amount input
   bool isUploading = false; // Track if the upload process has started
-  String enteredAmount = ""; // Store entered amount
+  String enteredAmount = ''; // Store entered amount
 
   @override
   void initState() {
@@ -35,38 +38,44 @@ class _UploadAssetPageState extends State<UploadAssetPage> {
     setState(() {
       currentStep = 1;
     });
-    await Future.delayed(Duration(seconds: 3)); // Simulating time for ZKP generation
+    await Future.delayed(
+        Duration(seconds: 3)); // Simulating time for ZKP generation
   }
 
   Future<void> _commitToChain() async {
     setState(() {
       currentStep = 2;
     });
-    await Future.delayed(Duration(seconds: 3)); // Simulating time for onchain commitment
+    await Future.delayed(
+        Duration(seconds: 3)); // Simulating time for onchain commitment
   }
 
   Future<void> _confirmOnchain() async {
     setState(() {
       currentStep = 3;
     });
-    await Future.delayed(Duration(seconds: 2)); // Simulating confirmation onchain
+    await Future.delayed(
+        Duration(seconds: 2)); // Simulating confirmation onchain
 
     // Show Success Dialog
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text("Upload Complete"),
-        content: Text("Your asset of $enteredAmount has been successfully uploaded and confirmed onchain!"),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text("OK"),
-          ),
-        ],
-      ),
-    );
+    if (mounted) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Upload Complete'),
+          content: Text(
+              'Your asset of $enteredAmount has been successfully uploaded and confirmed onchain!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   Widget _buildStepIndicator(int stepNumber, String label, bool isActive) {
@@ -108,7 +117,7 @@ class _UploadAssetPageState extends State<UploadAssetPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Upload Asset"),
+        title: Text('Upload Asset'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -139,23 +148,28 @@ class _UploadAssetPageState extends State<UploadAssetPage> {
                     _startUploadProcess();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Please enter an amount to upload')),
+                      SnackBar(
+                          content: Text('Please enter an amount to upload')),
                     );
                   }
                 },
                 child: Text('Upload'),
               ),
             ] else ...[
-              _buildStepIndicator(1, "Generating Zero Knowledge Proof", currentStep >= 1),
-              if (currentStep == 1) _buildAnimationPlaceholder("Generating ZKP..."),
-
+              _buildStepIndicator(
+                  1, 'Generating Zero Knowledge Proof', currentStep >= 1),
+              if (currentStep == 1)
+                _buildAnimationPlaceholder('Generating ZKP...'),
               SizedBox(height: 20),
-              _buildStepIndicator(2, "Committing Proof to Chain", currentStep >= 2),
-              if (currentStep == 2) _buildAnimationPlaceholder("Committing to the chain..."),
-
+              _buildStepIndicator(
+                  2, 'Committing Proof to Chain', currentStep >= 2),
+              if (currentStep == 2)
+                _buildAnimationPlaceholder('Committing to the chain...'),
               SizedBox(height: 20),
-              _buildStepIndicator(3, "Onchain Confirmation", currentStep >= 3),
-              if (currentStep == 3) _buildAnimationPlaceholder("Waiting for onchain confirmation..."),
+              _buildStepIndicator(3, 'Onchain Confirmation', currentStep >= 3),
+              if (currentStep == 3)
+                _buildAnimationPlaceholder(
+                    'Waiting for onchain confirmation...'),
             ],
           ],
         ),

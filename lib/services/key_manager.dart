@@ -13,16 +13,16 @@ abstract class SoloSafeSecureEnclaveInterface {
 class SoloSafeSecureEnclave implements SoloSafeSecureEnclaveInterface {
   final tag = 'keys';
   final password = 'password';
-  var secureEnclave;
+  SecureEnclave? secureEnclave;
 
   addEnclaveTag() async {
     secureEnclave ??= SecureEnclave();
     final isSecureEnclaveCreated =
-        (await secureEnclave.isKeyCreated(tag: tag)).value ?? false;
+        (await secureEnclave?.isKeyCreated(tag: tag))?.value ?? false;
     if (isSecureEnclaveCreated) {
       return;
     } else {
-      final res = await secureEnclave.generateKeyPair(
+      final res = await secureEnclave?.generateKeyPair(
           accessControl: AccessControlModel(
               tag: tag,
               password: password,
@@ -30,7 +30,7 @@ class SoloSafeSecureEnclave implements SoloSafeSecureEnclaveInterface {
             AccessControlOption.applicationPassword,
             AccessControlOption.privateKeyUsage
           ]));
-      if (res.error != null) {
+      if (res?.error != null) {
         throw Exception('Error adding secure enclave tag');
       }
     }
@@ -39,7 +39,7 @@ class SoloSafeSecureEnclave implements SoloSafeSecureEnclaveInterface {
   @override
   Future<SecureEnclave> getSecureEnclave() async {
     await addEnclaveTag();
-    return secureEnclave;
+    return secureEnclave!;
   }
 
   Future<String> encryptValue(String value) async {

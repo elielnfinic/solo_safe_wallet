@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DownloadAssetPage extends StatefulWidget {
+  const DownloadAssetPage({super.key});
+
   @override
-  _DownloadAssetPageState createState() => _DownloadAssetPageState();
+  State<DownloadAssetPage> createState() => _DownloadAssetPageState();
 }
 
 class _DownloadAssetPageState extends State<DownloadAssetPage> {
@@ -47,27 +49,29 @@ class _DownloadAssetPageState extends State<DownloadAssetPage> {
     });
 
     // Show success message
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text("Download Complete"),
-        content: Text("$amount ETH transferred to your offchain wallet!"),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text("OK"),
-          ),
-        ],
-      ),
-    );
+    if (mounted) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Download Complete'),
+          content: Text('$amount ETH transferred to your offchain wallet!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Download Assets")),
+      appBar: AppBar(title: Text('Download Assets')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -76,7 +80,7 @@ class _DownloadAssetPageState extends State<DownloadAssetPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Available Onchain Balance: $onchainBalance ETH",
+                'Available Onchain Balance: $onchainBalance ETH',
                 style: TextStyle(fontSize: 18),
               ),
               SizedBox(height: 20),
@@ -84,7 +88,7 @@ class _DownloadAssetPageState extends State<DownloadAssetPage> {
                 controller: _amountController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  labelText: "Enter amount to transfer",
+                  labelText: 'Enter amount to transfer',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
@@ -92,7 +96,9 @@ class _DownloadAssetPageState extends State<DownloadAssetPage> {
                     return 'Please enter an amount';
                   }
                   double? amount = double.tryParse(value);
-                  if (amount == null || amount <= 0 || amount > onchainBalance) {
+                  if (amount == null ||
+                      amount <= 0 ||
+                      amount > onchainBalance) {
                     return 'Enter a valid amount within balance';
                   }
                   return null;
@@ -104,11 +110,11 @@ class _DownloadAssetPageState extends State<DownloadAssetPage> {
               else
                 ElevatedButton(
                   onPressed: _startDownload,
-                  child: Text("Download to Device"),
+                  child: Text('Download to Device'),
                 ),
               SizedBox(height: 40),
               if (publicKey != null)
-                Text("Public Key: $publicKey", style: TextStyle(fontSize: 14)),
+                Text('Public Key: $publicKey', style: TextStyle(fontSize: 14)),
             ],
           ),
         ),
