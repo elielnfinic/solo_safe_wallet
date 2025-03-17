@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 class SendOfflinePage extends StatefulWidget {
@@ -139,119 +139,6 @@ class _SendOfflinePageState extends State<SendOfflinePage> {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// Manual IP and Port Input Page
-class ManualInputPage extends StatefulWidget {
-  final Function(String ip, int port) onSubmit;
-
-  ManualInputPage({required this.onSubmit});
-
-  @override
-  _ManualInputPageState createState() => _ManualInputPageState();
-}
-
-class _ManualInputPageState extends State<ManualInputPage> {
-  final _ipController = TextEditingController();
-  final _portController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Enter IP & Port')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _ipController,
-              decoration: InputDecoration(labelText: 'IP Address'),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              controller: _portController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Port'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                final ip = _ipController.text;
-                final port = int.tryParse(_portController.text) ?? 0;
-                widget.onSubmit(ip, port);
-                Navigator.pop(context);
-              },
-              child: Text('Connect'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// Page for entering the amount to send
-class SendAmountPage extends StatefulWidget {
-  final Socket socket;
-
-  SendAmountPage({required this.socket});
-
-  @override
-  _SendAmountPageState createState() => _SendAmountPageState();
-}
-
-class _SendAmountPageState extends State<SendAmountPage> {
-  final _amountController = TextEditingController();
-
-  Future<void> _sendAmount() async {
-    final amount = _amountController.text;
-    final message = "$amount:SEND";
-    widget.socket.add(Uint8List.fromList(message.codeUnits));
-    print("Amount sent: $amount");
-
-    // Show success dialog
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text("Transaction Complete"),
-        content: Text("Funds sent successfully!"),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.popUntil(context, ModalRoute.withName('/'));
-            },
-            child: Text("OK"),
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Send Amount')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Enter amount to send:', style: TextStyle(fontSize: 16)),
-            TextField(
-              controller: _amountController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(hintText: 'Amount'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _sendAmount,
-              child: Text('Send'),
             ),
           ],
         ),
