@@ -3,8 +3,9 @@
 // the address should be compatible with Ethereum and Bitcoin. The address should be generated from the public key
 
 import 'package:flutter/material.dart';
-import 'package:solosafe/generate_key_pair.dart';
-import 'package:solosafe/generate_seed_phase.dart';
+import 'package:solosafe/screens/auth/generate_address_page.dart';
+import 'package:solosafe/screens/auth/generate_key_pair.dart';
+import 'package:solosafe/screens/auth/generate_seed_phase.dart';
 
 class AuthenticationPage extends StatelessWidget {
   const AuthenticationPage({super.key});
@@ -51,35 +52,6 @@ class AuthenticationPage extends StatelessWidget {
                 );
               },
               child: const Text('Generate Address'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class GenerateAddressPage extends StatelessWidget {
-  const GenerateAddressPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Generate Address'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'Generate an address compatible with Ethereum and Bitcoin',
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Go back to Authentication'),
             ),
           ],
         ),
