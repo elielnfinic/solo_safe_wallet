@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'dart:typed_data';
 
 class ManualInputPage extends StatefulWidget {
   final Function(String ip, int port) onSubmit;
