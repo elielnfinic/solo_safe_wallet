@@ -8,29 +8,29 @@ import 'package:solosafe/screens/sync/download_asset.dart';
 import 'package:solosafe/screens/sync/upload_asset.dart';
 import '../screens/auth/auth.dart';
 
-class AppRoutes{
+class AppRoutes {
   static const String startAuth = '/start_auth';
   static const String createWallet = '/create_wallet';
   static const String restoreWallet = '/restore_wallet';
   static const String settings = '/settings';
-  static const String receive_online = '/receive_online';
-  static const String send_online = '/send_online';
-  static const String receive_offline = '/receive_offline';
-  static const String send_offline = '/send_offline';
-  static const String send_message_page = '/send_message_page';
-  static const String download_assets = '/download_assets';
-  static const String upload_assets = '/upload_assets';
+  static const String receiveOnline = '/receive_online';
+  static const String sendOnline = '/send_online';
+  static const String receiveOffline = '/receive_offline';
+  static const String sendOffline = '/send_offline';
+  static const String sendMessagePage = '/send_message_page';
+  static const String downloadAssets = '/download_assets';
+  static const String uploadAssets = '/upload_assets';
 
   static Map<String, WidgetBuilder> routes = {
     startAuth: (context) => StartAuthPage(),
     createWallet: (context) => CreateWalletPage(),
     restoreWallet: (context) => RestoreWalletPage(),
     settings: (context) => SettingsPage(),
-    receive_online: (context) => ReceiveCryptoPage(),
-    send_online: (context) => SendOnlinePage(),
-    receive_offline: (context) => ReceiveOfflinePage(),
-    send_offline: (context) => SendOfflinePage(),
-    download_assets: (context) => DownloadAssetPage(),
-    upload_assets:(context) => UploadAssetPage()
+    receiveOnline: (context) => ReceiveCryptoPage(),
+    sendOnline: (context) => SendOnlinePage(),
+    receiveOffline: (context) => ReceiveOfflinePage(),
+    sendOffline: (context) => SendOfflinePage(),
+    downloadAssets: (context) => DownloadAssetPage(),
+    uploadAssets: (context) => UploadAssetPage()
   };
 }

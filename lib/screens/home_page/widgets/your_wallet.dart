@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:solosafe/routes/app_routes.dart';
 import 'package:solosafe/services/eth_service.dart';
-import 'package:solosafe/services/key_manager.dart';
 import 'package:web3dart/web3dart.dart';
 
 class YourWallet extends StatefulWidget {
@@ -11,13 +10,13 @@ class YourWallet extends StatefulWidget {
 }
 
 class _YourWalletState extends State<YourWallet> {
-  String _address = "";
+  String _address = '';
   bool _showFullAddress = false;
 
   final ethService = EthService();
 
   double _onlineBalance = 0; // Replace with actual online balance logic
-  double _offlineBalance = 0; // Replace with actual offline balance logic
+  final double _offlineBalance = 0; // Replace with actual offline balance logic
 
   @override
   void initState() {
@@ -28,8 +27,7 @@ class _YourWalletState extends State<YourWallet> {
   _loadPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String publicKey = prefs.getString("publicKey") ?? "";
-    String privateKey = prefs.getString("privateKey") ?? ""; 
-    
+    String privateKey = prefs.getString("privateKey") ?? "";
 
     // Ensure the getBalance method is awaited and the result is handled correctly
     final balance = await ethService.getBalance(publicKey);
@@ -108,7 +106,7 @@ class _YourWalletState extends State<YourWallet> {
                 ),
                 IconButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, AppRoutes.upload_assets);
+                      Navigator.pushNamed(context, AppRoutes.uploadAssets);
                     },
                     icon: Icon(
                       Icons.upload_sharp,
@@ -135,7 +133,7 @@ class _YourWalletState extends State<YourWallet> {
                 ),
                 IconButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, AppRoutes.download_assets);
+                      Navigator.pushNamed(context, AppRoutes.downloadAssets);
                     },
                     icon: Icon(
                       Icons.download_sharp,
