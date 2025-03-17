@@ -3,6 +3,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:solosafe/start/solosafe.dart';
 
 Future main() async {
-  await dotenv.load(fileName: '.env');
+  await dotenv.load(fileName: 'assets/.env');
   runApp(SoloSafe());
 }
