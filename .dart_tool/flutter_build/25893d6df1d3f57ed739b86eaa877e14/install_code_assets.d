@@ -1,1 +1,0 @@
- /Users/baruka99/Documents/projects/me/open_sources/solosafe/solo_safe_wallet/.dart_tool/flutter_build/25893d6df1d3f57ed739b86eaa877e14/native_assets.json: 
