@@ -4,12 +4,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:solosafe/routes/app_routes.dart'; // For app version
 
 class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
+
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  State<SettingsPage> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  String _appVersion = ""; // Default version
+  String _appVersion = ''; // Default version
 
   @override
   void initState() {
@@ -28,7 +30,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Settings"),
+        title: Text('Settings'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -36,7 +38,7 @@ class _SettingsPageState extends State<SettingsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             ListTile(
-              title: Text("Manage Wallet"),
+              title: Text('Manage Wallet'),
               leading: Icon(Icons.wallet),
               onTap: () {
                 // Handle wallet management
@@ -44,7 +46,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             Divider(),
             ListTile(
-              title: Text("Backup Wallet"),
+              title: Text('Backup Wallet'),
               leading: Icon(Icons.backup),
               onTap: () {
                 // Handle wallet backup
@@ -52,7 +54,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             Divider(),
             ListTile(
-              title: Text("Change PIN"),
+              title: Text('Change PIN'),
               leading: Icon(Icons.lock),
               onTap: () {
                 // Handle PIN change
@@ -60,7 +62,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             Divider(),
             ListTile(
-              title: Text("Security Settings"),
+              title: Text('Security Settings'),
               leading: Icon(Icons.security),
               onTap: () {
                 // Handle security settings
@@ -71,7 +73,7 @@ class _SettingsPageState extends State<SettingsPage> {
             // Log out button
             ListTile(
               title: Text(
-                "Log out",
+                'Log out',
                 style: TextStyle(color: Colors.red),
               ),
               leading: Icon(Icons.exit_to_app, color: Colors.red),
@@ -84,7 +86,7 @@ class _SettingsPageState extends State<SettingsPage> {
               padding: const EdgeInsets.only(top: 16.0),
               child: Center(
                 child: Text(
-                  "Version $_appVersion",
+                  'Version $_appVersion',
                   style: TextStyle(color: Colors.grey),
                 ),
               ),
@@ -100,14 +102,14 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Log out"),
-          content: Text("Are you sure you want to log out?"),
+          title: Text('Log out'),
+          content: Text('Are you sure you want to log out?'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("Cancel"),
+              child: Text('Cancel'),
             ),
             TextButton(
               onPressed: () async {
@@ -117,10 +119,16 @@ class _SettingsPageState extends State<SettingsPage> {
                 prefs.remove('public_key');
                 prefs.remove('mnemonic');
                 // Navigate to the start auth page remove all history so that the user can't go back
-                Navigator.pushNamedAndRemoveUntil(context, AppRoutes.startAuth, (route) => false);
+                if (context.mounted) {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    AppRoutes.startAuth,
+                    (route) => false,
+                  );
+                }
               },
               child: Text(
-                "Log out",
+                'Log out',
                 style: TextStyle(color: Colors.red),
               ),
             ),
