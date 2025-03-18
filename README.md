@@ -15,3 +15,6 @@ Trustworthy and secure.
 - [ ] Supports bluetooth, NFC, QR code
 - [ ] Supports AirDrop
 
+## PR naming convention
+
+Refer to [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
