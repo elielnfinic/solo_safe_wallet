@@ -31,6 +31,9 @@ dependencies:
   permission_handler: ^11.4.0
   network_info_plus: ^6.1.3
   secure_enclave: ^0.1.1
+  wallet_kit: ^0.2.0
+  hive_flutter: ^1.1.0
+  hooks_riverpod: ^2.6.1
 
 dev_dependencies:
   flutter_test:
