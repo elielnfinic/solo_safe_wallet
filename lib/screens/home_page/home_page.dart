@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:solosafe/routes/app_routes.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:solosafe/screens/home_page/widgets/latest_transactions.dart';
-import 'package:solosafe/screens/home_page/widgets/mainnet_testnet.dart';
 import 'package:solosafe/screens/home_page/widgets/token_list.dart';
-import 'package:solosafe/screens/home_page/widgets/send_receive.dart';
-import 'package:solosafe/screens/home_page/widgets/your_wallet.dart';
+import 'package:solosafe/screens/home_page/widgets/wallet.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -20,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("SoloSafe Wallet"),
+        title: Text('SoloSafe Wallet'),
         actions: [
           IconButton(
             icon: Icon(Icons.settings),
@@ -37,9 +35,9 @@ class _HomePageState extends State<HomePage> {
           children: [
             // Network Toggle
             // MainnetTestnet(),
-            TokenListWidget(tokens: ["USDT", "STRK", "ETH", "BTC"]),
+            TokenListWidget(tokens: ['USDT', 'STRK', 'ETH', 'BTC']),
             SizedBox(height: 10),
-            YourWallet(),
+            Wallet(),
             SizedBox(height: 30),
             // Tabs for Online and Offline Transactions
             LatestTransactions()

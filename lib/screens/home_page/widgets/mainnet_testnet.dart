@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class MainnetTestnet extends StatefulWidget {
-  @override 
-  _MainnetTestnetState createState() => _MainnetTestnetState();
+  const MainnetTestnet({super.key});
+
+  @override
+  State<MainnetTestnet> createState() => _MainnetTestnetState();
 }
 
-class _MainnetTestnetState extends State<MainnetTestnet>{
+class _MainnetTestnetState extends State<MainnetTestnet> {
   bool _isTestnet = true; // To toggle between testnet and mainnet
 
   _toggleNetwork(bool isTestnet) {
@@ -15,21 +17,19 @@ class _MainnetTestnetState extends State<MainnetTestnet>{
   }
 
   @override
-  Widget build(BuildContext context){
-    return Container(
-      child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Testnet"),
-                Switch(
-                  value: !_isTestnet,
-                  onChanged: (value) {
-                    _toggleNetwork(!value);
-                  },
-                ),
-                Text("Mainnet"),
-              ],
-            ),
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('Testnet'),
+        Switch(
+          value: !_isTestnet,
+          onChanged: (value) {
+            _toggleNetwork(!value);
+          },
+        ),
+        Text('Mainnet'),
+      ],
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:web3dart/web3dart.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart'; // For making HTTP requests
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -7,7 +8,7 @@ class EthService {
 
   EthService() {
     String rpcUrl = dotenv.env['ETH_RPC_SERVER'] ?? '';
-    _client = Web3Client(rpcUrl, Client());    
+    _client = Web3Client(rpcUrl, Client());
   }
 
   // Function to get the balance of an Ethereum address

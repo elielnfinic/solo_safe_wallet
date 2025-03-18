@@ -7,7 +7,8 @@ class ConfirmSendOnlinePage extends StatelessWidget {
   final double networkFee;
   final double totalAmount;
 
-  ConfirmSendOnlinePage({
+  const ConfirmSendOnlinePage({
+    super.key,
     required this.asset,
     required this.amount,
     required this.recipient,
@@ -25,7 +26,6 @@ class ConfirmSendOnlinePage extends StatelessWidget {
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -176,7 +176,6 @@ class ConfirmSendOnlinePage extends StatelessWidget {
                   Navigator.pop(context); // Return after confirmation
                 },
                 child: Text('Confirm'),
-                
               ),
             ),
           ],

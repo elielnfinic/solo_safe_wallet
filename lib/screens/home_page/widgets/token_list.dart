@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class TokenListWidget extends StatefulWidget {
   final List<String> tokens;
 
-  TokenListWidget({required this.tokens});
+  const TokenListWidget({super.key, required this.tokens});
 
   @override
-  _TokenListWidgetState createState() => _TokenListWidgetState();
+  State<TokenListWidget> createState() => _TokenListWidgetState();
 }
 
 class _TokenListWidgetState extends State<TokenListWidget> {
@@ -51,7 +51,8 @@ class _TokenListWidgetState extends State<TokenListWidget> {
           },
           child: AnimatedDefaultTextStyle(
             duration: Duration(milliseconds: 300),
-            style: TextStyle(// Enlarge selected token
+            style: TextStyle(
+              // Enlarge selected token
               color: _selectedTokenIndex == i
                   ? Colors.blue // Blue color when selected
                   : Colors.black, // Default color when not selected

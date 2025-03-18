@@ -3,16 +3,16 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:clipboard/clipboard.dart'; // Using clipboard package
 import 'package:network_info_plus/network_info_plus.dart'; // For getting WiFi IP address
-import 'package:flutter/animation.dart'; // For animation
 
 class ReceiveOfflinePage extends StatefulWidget {
+  const ReceiveOfflinePage({super.key});
+
   @override
-  _ReceiveCryptoPageState createState() => _ReceiveCryptoPageState();
+  State<ReceiveOfflinePage> createState() => _ReceiveOfflinePageState();
 }
 
-class _ReceiveCryptoPageState extends State<ReceiveOfflinePage>
+class _ReceiveOfflinePageState extends State<ReceiveOfflinePage>
     with SingleTickerProviderStateMixin {
   String walletAddress = '';
   String wifiIp = '';
@@ -48,7 +48,8 @@ class _ReceiveCryptoPageState extends State<ReceiveOfflinePage>
     if (mounted) {
       setState(() {
         wifiIp = ipAddress ?? 'Unknown IP';
-        selectedPort = Random().nextInt(7700) + 32300; // Random port between 32300-40000
+        selectedPort =
+            Random().nextInt(7700) + 32300; // Random port between 32300-40000
       });
     }
   }
@@ -75,7 +76,7 @@ class _ReceiveCryptoPageState extends State<ReceiveOfflinePage>
         });
       });
     } catch (e) {
-      print("Error starting socket: $e");
+      print('Error starting socket: $e');
     }
   }
 
@@ -88,16 +89,6 @@ class _ReceiveCryptoPageState extends State<ReceiveOfflinePage>
         _controller.repeat(reverse: true); // Restart animation
       });
     }
-  }
-
-  void _copyAddress() {
-    FlutterClipboard.copy(walletAddress).then((value) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Address copied to clipboard!')),
-        );
-      }
-    });
   }
 
   Widget _buildListeningAnimation() {
@@ -190,7 +181,8 @@ class _ReceiveCryptoPageState extends State<ReceiveOfflinePage>
                     SizedBox(height: 20),
                     Text(
                       'Device Connected. Waiting for transaction...',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ] else ...[
                     ElevatedButton(
@@ -200,14 +192,14 @@ class _ReceiveCryptoPageState extends State<ReceiveOfflinePage>
                   ],
                   SizedBox(height: 40),
                   Text(
-                    "Scan the QR Code to send crypto",
+                    'Scan the QR Code to send crypto',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 20),
                   Center(
                     child: QrImageView(
-                      data: "solo://$wifiIp:$selectedPort",
+                      data: 'solo://$wifiIp:$selectedPort',
                       version: QrVersions.auto,
                       size: 200.0,
                     ),

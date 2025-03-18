@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:solosafe/screens/online_transactions/send/confirm_send_online.dart';
+import 'package:solosafe/screens/online_transactions/send/qr_code.dart';
 
 class SendOnlinePage extends StatefulWidget {
-  final double balance = 10.0; // Assume user balance
+  final double balance = 10.0;
+
+  const SendOnlinePage({super.key}); // Assume user balance
 
   @override
-  _SendOnlinePageState createState() => _SendOnlinePageState();
+  State<SendOnlinePage> createState() => _SendOnlinePageState();
 }
 
 class _SendOnlinePageState extends State<SendOnlinePage> {
@@ -114,7 +117,7 @@ class _SendOnlinePageState extends State<SendOnlinePage> {
                 controller: _amountController,
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 decoration: InputDecoration(
-                  hintText: "Amount",
+                  hintText: 'Amount',
                   border: OutlineInputBorder(),
                   filled: true,
                   fillColor: Colors.grey[100],
@@ -162,41 +165,23 @@ class _SendOnlinePageState extends State<SendOnlinePage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => ConfirmSendOnlinePage(
-                            asset: "USDC",
+                            asset: 'USDC',
                             networkFee: 0.0001,
                             recipient: _addressController.text,
                             amount: double.parse(_amountController.text),
-                            totalAmount: double.parse(_amountController.text) + 0.0001,
+                            totalAmount:
+                                double.parse(_amountController.text) + 0.0001,
                           ),
                         ),
                       );
                     }
                   },
-                  child: Text("Next"),
+                  child: Text('Next'),
                 ),
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class QRScannerPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Scan QR Code')),
-      // body: MobileScanner(
-      //   // onDetect: (barcode, args) {
-      //   //   if (barcode.rawValue != null) {
-      //   //     Navigator.pop(context, barcode.rawValue); // Return scanned value
-      //   //   }
-      //   // },
-      // ),
-      body: Center(
-        child: Text('QR Scanner not available'),
       ),
     );
   }
