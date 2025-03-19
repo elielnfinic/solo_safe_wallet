@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:solosafe/screens/home_page/home_page.dart';
+import 'package:wallet_kit/wallet_kit.dart';
 import '../../services/key_manager.dart';
 
 class CreateWalletPage extends StatefulWidget {
@@ -16,6 +17,8 @@ class _CreateWalletPageState extends State<CreateWalletPage> {
   String _privateKey = '';
   String _publicKey = '';
   bool _isMnemonicSaved = false; // Track if the user has saved the mnemonic
+  String _strkPrivateKey = '';
+  String _strkAddress = '';
 
   @override
   void initState() {
@@ -31,6 +34,17 @@ class _CreateWalletPageState extends State<CreateWalletPage> {
     final privateKey = await KeyManager.generatePrivateKey(mnemonic);
     final publicKey = KeyManager.generatePublicKey(privateKey);
 
+    
+    
+    // Generate the mnemonic
+    final strkPrivateKey = await WalletService.derivePrivateKey(seedPhrase: mnemonic, derivationIndex: 0);
+    final strkAddress = await WalletService.computeAddress(privateKey: strkPrivateKey);
+    // WalletService.addWallet(secureStore: secureStore, seedPhrase: seedPhrase);
+    // WalletService.addAccount(secureStore: ,wallet: , seedPhrase: mnemonic);
+    // deploy_account(strkPrivateKey, strkAddress);
+    final walletService = WalletService();
+    // walletService.addWallet(secureStore: SecureStoref, seedPhrase: mnemonic);
+
     // Save the keys into SharedPreferences
     final keyManager = KeyManager();
     await keyManager.saveKeys(privateKey, publicKey);
@@ -39,6 +53,8 @@ class _CreateWalletPageState extends State<CreateWalletPage> {
       _mnemonic = mnemonic;
       _privateKey = privateKey;
       _publicKey = publicKey;
+      _strkPrivateKey = strkPrivateKey.toHexString();
+      _strkAddress = strkAddress.toHexString();
     });
   }
 
@@ -105,11 +121,15 @@ class _CreateWalletPageState extends State<CreateWalletPage> {
               onPressed: _isMnemonicSaved
                   ? () async {
                       // Save the private key, public key, and mnemonic to SharedPreferences
+                      
+                      // Encrypt these with secure enclave
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
                       prefs.setString('private_key', _privateKey);
                       prefs.setString('public_key', _publicKey);
                       prefs.setString('mnemonic', _mnemonic);
+                      prefs.setString('strk_private_key', _strkPrivateKey);
+                      prefs.setString('strk_address', _strkAddress);
 
                       // Proceed to the next step (e.g., wallet dashboard)
                       if (context.mounted) {

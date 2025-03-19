@@ -34,6 +34,8 @@ dependencies:
   wallet_kit: ^0.2.0
   hive_flutter: ^1.1.0
   hooks_riverpod: ^2.6.1
+  starknet: ^0.1.2+1
+  secure_store: ^0.1.2+1
 
 dev_dependencies:
   flutter_test:

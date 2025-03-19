@@ -10,14 +10,14 @@ class LatestTransactions extends StatefulWidget {
 
 class _LatestTransactionsState extends State<LatestTransactions> {
   final List<Map<String, String>> _offlineTransactions = [
-    {'amount': '0.5 ETH', 'status': 'Confirmed', 'time': '2 hrs ago'},
-    {'amount': '0.2 ETH', 'status': 'Wait', 'time': '5 hrs ago'},
-    {'amount': '1.0 ETH', 'status': 'Offline', 'time': '1 day ago'},
+    {'amount': '0.5 USDT', 'status': 'Confirmed', 'time': '2 hrs ago'},
+    {'amount': '0.2 USDT', 'status': 'Wait', 'time': '5 hrs ago'},
+    {'amount': '1.0 USDT', 'status': 'Offline', 'time': '1 day ago'},
   ];
 
   final List<Map<String, String>> _onlineTransactions = [
-    {'amount': '0.8 ETH', 'type': 'Received', 'time': '4 hrs ago'},
-    {'amount': '0.3 ETH', 'type': 'Sent', 'time': '10 hrs ago'},
+    {'amount': '0.8 USDT', 'type': 'Received', 'time': '4 hrs ago'},
+    {'amount': '0.3 USDT', 'type': 'Sent', 'time': '10 hrs ago'},
   ];
 
   @override

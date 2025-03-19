@@ -97,7 +97,8 @@ class _Wallettate extends State<Wallet> {
                       style: TextStyle(color: Colors.white70),
                     ),
                     Text(
-                      '$_onlineBalance ETH',
+                      // '$_onlineBalance ETH',
+                      '7890.2 USDT',
                       style: TextStyle(
                           fontSize: 19,
                           fontWeight: FontWeight.bold,
@@ -124,7 +125,8 @@ class _Wallettate extends State<Wallet> {
                       style: TextStyle(color: Colors.white70),
                     ),
                     Text(
-                      '$_offlineBalance ETH',
+                      // '$_offlineBalance ETH',
+                      '123.32 USDT',
                       style: TextStyle(
                           fontSize: 19,
                           fontWeight: FontWeight.bold,

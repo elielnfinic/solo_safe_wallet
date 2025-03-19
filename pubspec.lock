@@ -761,7 +761,7 @@ packages:
     source: hosted
     version: "0.1.1"
   secure_store:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: secure_store
       sha256: "657b6fc908040701f836181fd3aaf30b167814fde1da5cdfdfd380f2aea191a0"
@@ -854,7 +854,7 @@ packages:
     source: hosted
     version: "1.12.1"
   starknet:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: starknet
       sha256: "748be6927a0c2eee3dbdfc795d4ad0ace09b8840bac267fa2e5ccee3ac096e96"
