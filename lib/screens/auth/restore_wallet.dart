@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bip39/bip39.dart' as bip39;
-import 'package:bip32/bip32.dart' as bip32;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:solosafe/screens/home_page/home_page.dart';
-import 'package:web3dart/web3dart.dart';
-// ignore: depend_on_referenced_packages
-import 'package:hex/hex.dart';
+import 'package:solosafe/services/key_manager.dart';
 
 class RestoreWalletPage extends StatefulWidget {
   const RestoreWalletPage({super.key});
@@ -25,39 +21,7 @@ class _RestoreWalletPageState extends State<RestoreWalletPage> {
     final mnemonic = _mnemonicController.text.trim();
 
     if (bip39.validateMnemonic(mnemonic)) {
-      setState(() {
-        _isRestoring = true;
-      });
-
-      // Generate seed from mnemonic
-      final seed = bip39.mnemonicToSeed(mnemonic);
-
-      // Derive private key from seed using a derivation path
-      final root = bip32.BIP32.fromSeed(seed);
-      // final child = root.derivePath("m/44'/60'/0'/0/0"); // Example derivation path for Ethereum
-      final child = root.derivePath("m/44'/9004'/0'/0/0");
-
-      var privateKey = HEX.encode(child.privateKey!);
-
-      // Derive private key from seed (for simplicity, we'll use the first key)
-      // var privateKey = seed.substring(0, 64); // First 32 bytes
-
-      // Create credentials to get public key
-      final credentials = EthPrivateKey.fromHex(privateKey);
-      final publicKey = credentials.address;
-
-      setState(() {
-        _privateKey = privateKey;
-        _publicKey = publicKey.hex;
-        _isRestoring = false;
-      });
-
-      // save the keys into SharedPreferences
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('private_key', privateKey);
-      await prefs.setString('public_key', publicKey.hex);
-      await prefs.setString('mnemonic', mnemonic);
-
+      await generateSoloSafeKeys(mnemonic: mnemonic);
       // Navigate to HomePage
       if (mounted) {
         Navigator.pushReplacement(

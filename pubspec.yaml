@@ -36,6 +36,7 @@ dependencies:
   hooks_riverpod: ^2.6.1
   starknet: ^0.1.2+1
   secure_store: ^0.1.2+1
+  starknet_provider: ^0.1.1+2
 
 dev_dependencies:
   flutter_test:

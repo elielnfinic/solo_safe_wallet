@@ -1,6 +1,4 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import '../../services/key_manager.dart';
 
 class VerifyMnemoPage extends StatefulWidget {
   const VerifyMnemoPage({super.key});
@@ -10,7 +8,6 @@ class VerifyMnemoPage extends StatefulWidget {
 }
 
 class _VerifyMnemoPageState extends State<VerifyMnemoPage> {
-  final String _mnemonic = '';
 
   final Map<int, String> _verificationWords = {};
   final List<int> _positionsToVerify = [];
@@ -19,41 +16,9 @@ class _VerifyMnemoPageState extends State<VerifyMnemoPage> {
   @override
   void initState() {
     super.initState();
-    generateKeys();
   }
 
-  Future<void> generateKeys() async {
-    final mnemonic = await KeyManager.generateMnemonic();
-    final privateKey = await KeyManager.generatePrivateKey(mnemonic);
-    final publicKey = KeyManager.generatePublicKey(privateKey);
-
-    final keyManager = KeyManager();
-    await keyManager.saveKeys(privateKey, publicKey);
-
-    // setState(() {
-    //   _mnemonic = mnemonic;
-    //   _privateKey = privateKey;
-    //   _publicKey = publicKey;
-    // });
-
-    generateVerificationWords();
-  }
-
-  void generateVerificationWords() {
-    // Split the mnemonic into a list of words
-    final mnemonicWords = _mnemonic.split(' ');
-
-    // Randomly select four positions for verification
-    final random = Random();
-    while (_positionsToVerify.length < 4) {
-      int position = random.nextInt(mnemonicWords.length);
-      if (!_positionsToVerify.contains(position)) {
-        _positionsToVerify.add(position);
-        _verificationWords[position] = mnemonicWords[position];
-        _controllers[position] = TextEditingController();
-      }
-    }
-  }
+  
 
   void _verifyMnemonic() {
     bool isValid = true;

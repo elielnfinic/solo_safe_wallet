@@ -19,7 +19,7 @@ class _CheckPrivateKeyExistsState extends State<CheckPrivateKeyExists> {
 
   Future<void> checkForMnemonic() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? prKey = prefs.getString('private_key');
+    String? prKey = prefs.getString('privateKey');
 
     // Navigate based on the presence of mnemonic
     if (mounted) {
