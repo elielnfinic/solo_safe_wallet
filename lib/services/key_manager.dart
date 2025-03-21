@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:convert/convert.dart';
 import 'package:secure_enclave/secure_enclave.dart';
+import 'package:wallet_kit/wallet_kit.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -66,49 +67,68 @@ class SoloSafeSecureEnclave implements SoloSafeSecureEnclaveInterface {
   }
 }
 
-class KeyManager {
-  // Generate a mnemonic
-  static Future<String> generateMnemonic() async {
-    return bip39.generateMnemonic();
-  }
+String enclaveKey() {
+  return 'enclaveKey';
+}
 
-  // Generate a private key using the mnemonic
-  static Future<String> generatePrivateKey(String mnemonic) async {
-    var seed = bip39.mnemonicToSeedHex(mnemonic);
-    var privateKey = EthPrivateKey.fromHex(seed);
-    return privateKey.privateKeyInt.toRadixString(16);
-  }
+Future<String> enclavePassword() async {
+  return 'enclavePassword';
+}
 
-  // Generate a public key from the private key
-  static String generatePublicKey(String privateKey) {
-    final ethPrivateKey = EthPrivateKey.fromHex(privateKey);
-    final publicKey = ethPrivateKey.address;
-    return publicKey.hex;
-  }
+// This function generates the keys, saves them and returns the mnemonic for the user to save
+Future<String> generateSoloSafeKeys({String mnemonic = ''}) async {
+  // Generate the mnemonic
+  mnemonic = mnemonic == '' ? bip39.generateMnemonic() : mnemonic;
 
-  // Save the keys into SharedPreferences
-  Future<void> saveKeys(String privateKey, String publicKey) async {
-    final solosafeSecureEnclave = SoloSafeSecureEnclave();
-    final encryptedKey = await solosafeSecureEnclave.encryptValue(privateKey);
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('publicKey', publicKey);
-    await prefs.setString('privateKey', encryptedKey);
-  }
+  // Generate the ETH private and public keys
+  var seed = bip39.mnemonicToSeedHex(mnemonic);
+  var privateKey = EthPrivateKey.fromHex(seed);
+  final hexPrivateKey = privateKey.privateKeyInt.toRadixString(16);
+  final hexPublicKey = privateKey.address.hex;
 
-  // Retrieve saved keys
-  static Future<Map<String, String>> getKeys() async {
-    final solosafeSecureEnclave = SoloSafeSecureEnclave();
+  // Generate the STRK private and public keys
+  final (strkHexPrivateKey, strkHexAddress) = await generateStrkKeys(mnemonic);
 
-    final prefs = await SharedPreferences.getInstance();
-    String? privateKey;
-    String? publicKey = prefs.getString('publicKey');
+  // Save the keys
+  await saveKeys(
+      hexPrivateKey, hexPublicKey, mnemonic, strkHexPrivateKey, strkHexAddress);
+  return mnemonic;
+}
 
-    privateKey = prefs.getString('privateKey');
-    privateKey = await solosafeSecureEnclave.decryptValue(privateKey ?? '');
+Future<(String, String)> generateStrkKeys(String mnemonic) async {
+  final strkPrivateKey = await WalletService.derivePrivateKey(
+      seedPhrase: mnemonic, derivationIndex: 0);
+  final strkAddress =
+      await WalletService.computeAddress(privateKey: strkPrivateKey);
+  return (strkPrivateKey.toHexString(), strkAddress.toHexString());
+}
 
-    return {
-      'privateKey': privateKey,
-      'publicKey': publicKey ?? '',
-    };
-  }
+Future<void> saveKeys(String privateKey, String publicKey, String mnemonic,
+    String strkHexPrivateKey, String strkHexAddress) async {
+  final solosafeSecureEnclave = SoloSafeSecureEnclave();
+  final encryptedPrivateKey =
+      await solosafeSecureEnclave.encryptValue(privateKey);
+  final encryptedPublicKey =
+      await solosafeSecureEnclave.encryptValue(publicKey);
+  final encryptedMnemonic = await solosafeSecureEnclave.encryptValue(mnemonic);
+  final encryptedStrkPrivateKey =
+      await solosafeSecureEnclave.encryptValue(strkHexPrivateKey);
+  final encryptedStrkAddress =
+      await solosafeSecureEnclave.encryptValue(strkHexAddress);
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('publicKey', encryptedPublicKey);
+  await prefs.setString('privateKey', encryptedPrivateKey);
+  await prefs.setString('mnemonic', encryptedMnemonic);
+  await prefs.setString('strkPrivateKey', encryptedStrkPrivateKey);
+  await prefs.setString('strkAddress', encryptedStrkAddress);
+}
+
+Future<(String, String)> getDecryptedPublicKeys() async{
+  final prefs = await SharedPreferences.getInstance();
+  final solosafeSecureEnclave = SoloSafeSecureEnclave();
+  final encryptedPublicKey = prefs.getString('publicKey') ?? '';
+  final encryptedStrkAddress = prefs.getString('strkAddress') ?? '';
+  final publicKey = await solosafeSecureEnclave.decryptValue(encryptedPublicKey);
+  final strkAddress = await solosafeSecureEnclave.decryptValue(encryptedStrkAddress);
+  return (publicKey, strkAddress);
 }

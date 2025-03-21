@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:solosafe/screens/home_page/home_page.dart';
 import '../../services/key_manager.dart';
 
@@ -13,8 +12,6 @@ class CreateWalletPage extends StatefulWidget {
 
 class _CreateWalletPageState extends State<CreateWalletPage> {
   String _mnemonic = '';
-  String _privateKey = '';
-  String _publicKey = '';
   bool _isMnemonicSaved = false; // Track if the user has saved the mnemonic
 
   @override
@@ -24,21 +21,10 @@ class _CreateWalletPageState extends State<CreateWalletPage> {
   }
 
   Future<void> generateKeys() async {
-    // Generate the mnemonic
-    final mnemonic = await KeyManager.generateMnemonic();
-
-    // Generate private and public keys
-    final privateKey = await KeyManager.generatePrivateKey(mnemonic);
-    final publicKey = KeyManager.generatePublicKey(privateKey);
-
-    // Save the keys into SharedPreferences
-    final keyManager = KeyManager();
-    await keyManager.saveKeys(privateKey, publicKey);
-
+    // This function generates and saves the new SoloSafe private keys
+    final mnemonic = await generateSoloSafeKeys();
     setState(() {
       _mnemonic = mnemonic;
-      _privateKey = privateKey;
-      _publicKey = publicKey;
     });
   }
 
@@ -103,14 +89,7 @@ class _CreateWalletPageState extends State<CreateWalletPage> {
 
             ElevatedButton(
               onPressed: _isMnemonicSaved
-                  ? () async {
-                      // Save the private key, public key, and mnemonic to SharedPreferences
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      prefs.setString('private_key', _privateKey);
-                      prefs.setString('public_key', _publicKey);
-                      prefs.setString('mnemonic', _mnemonic);
-
+                  ? () async {                     
                       // Proceed to the next step (e.g., wallet dashboard)
                       if (context.mounted) {
                         Navigator.push(

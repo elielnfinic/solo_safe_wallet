@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:solosafe/routes/app_routes.dart';
 import 'package:solosafe/services/eth_service.dart';
+import 'package:solosafe/services/key_manager.dart';
+import 'package:solosafe/services/strk_service.dart';
 import 'package:web3dart/web3dart.dart';
 
 class Wallet extends StatefulWidget {
@@ -27,8 +28,17 @@ class _Wallettate extends State<Wallet> {
   }
 
   _loadPreferences() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String publicKey = prefs.getString('publicKey') ?? '';
+    final (decryptedEthPublicKey, decryptedStrkAddress) = await getDecryptedPublicKeys();
+
+    // return;
+    String ethPublicKey = decryptedEthPublicKey;
+    String strkAddress = decryptedStrkAddress;
+    print('ETH Public Key: $ethPublicKey');
+    final publicKey = ethPublicKey;
+
+    getStrkAccountBalance(strkAddress).then((value){
+      print('STRK Balance: $value');
+    });
 
     // Ensure the getBalance method is awaited and the result is handled correctly
     final balance = await ethService.getBalance(publicKey);
@@ -97,7 +107,7 @@ class _Wallettate extends State<Wallet> {
                       style: TextStyle(color: Colors.white70),
                     ),
                     Text(
-                      '$_onlineBalance ETH',
+                      '$_onlineBalance USDT',
                       style: TextStyle(
                           fontSize: 19,
                           fontWeight: FontWeight.bold,
@@ -124,7 +134,7 @@ class _Wallettate extends State<Wallet> {
                       style: TextStyle(color: Colors.white70),
                     ),
                     Text(
-                      '$_offlineBalance ETH',
+                      '$_offlineBalance USDT',
                       style: TextStyle(
                           fontSize: 19,
                           fontWeight: FontWeight.bold,

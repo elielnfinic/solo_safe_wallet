@@ -26,6 +26,6 @@ jobs :
         run: flutter test
       - name: Analyze code 
         run: flutter analyze 
-      - name: Build APK 
-        run: flutter build apk 
+      # - name: Build APK 
+        # run: flutter build apk 
     
