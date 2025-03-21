@@ -112,3 +112,11 @@ class KeyManager {
     };
   }
 }
+
+// This function generates the keys, saves them and returns the mnemonic for the user to save 
+Future<String> generateSoloSafeKeys(){
+  // Generate the mnemonic 
+  final mnemonic = KeyManager.generateMnemonic();
+
+  return mnemonic;
+}
