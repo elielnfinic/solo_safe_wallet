@@ -315,6 +315,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_udid:
+    dependency: "direct main"
+    description:
+      name: flutter_udid
+      sha256: "166bee5989a58c66b8b62000ea65edccc7c8167bbafdbb08022638db330dd030"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -488,6 +496,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.15.0"
+  mobile_device_identifier:
+    dependency: "direct main"
+    description:
+      name: mobile_device_identifier
+      sha256: "50c838c4783b84a3d70e3bb06960ba8a9d17d6852d49882c8c3f54c794791caa"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   network_info_plus:
     dependency: "direct main"
     description:

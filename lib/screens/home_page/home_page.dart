@@ -3,6 +3,7 @@ import 'package:solosafe/routes/app_routes.dart';
 import 'package:solosafe/screens/home_page/widgets/latest_transactions.dart';
 import 'package:solosafe/screens/home_page/widgets/token_list.dart';
 import 'package:solosafe/screens/home_page/widgets/wallet.dart';
+import 'package:solosafe/services/device_ids.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,8 +13,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // To toggle full address display
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +37,15 @@ class _HomePageState extends State<HomePage> {
             TokenListWidget(tokens: ['USDT', 'STRK', 'ETH', 'BTC']),
             SizedBox(height: 10),
             Wallet(),
+            FutureBuilder(
+                future: getDeviceId(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Text('Device ID: ${snapshot.data}');
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                }),
             SizedBox(height: 30),
             // Tabs for Online and Offline Transactions
             LatestTransactions()
