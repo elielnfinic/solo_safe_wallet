@@ -1,31 +1,39 @@
 import 'package:flutter_udid/flutter_udid.dart';
-import 'package:mobile_device_identifier/mobile_device_identifier.dart';
 import 'package:secure_enclave/secure_enclave.dart';
+import 'package:solosafe/providers/password.dart';
+import 'package:solosafe/services/key_manager.dart';
 
 /// This file contains logic for managing device ids
 /// The device IDs are core to the security of the offline transactions.
 
 Future<String> getDeviceId() async {
-  String mobile_device_id = "";
+  String mobileDeviceId = '';
   final secureEnclave = SecureEnclave();
   try {
-    mobile_device_id = await FlutterUdid.consistentUdid;
-    // secureEnclave.generateKeyPair(accessControl: AccessControlModel.fromJson())
-    await secureEnclave.generateKeyPair(
-      accessControl: AccessControlModel(
-        password: mobile_device_id,
-        options: [
-          AccessControlOption.applicationPassword,
-          AccessControlOption.privateKeyUsage,
-        ],
-        tag: 'device_id',
-      ),
-    );
+    mobileDeviceId =
+        await FlutterUdid.consistentUdid + await getEncryptedPrivateKey();
 
-    final public_id = await secureEnclave.getPublicKey(tag: 'device_id');
-    print("Public ID: ${public_id.value}");
+    final tagExists =
+        (await secureEnclave.isKeyCreated(tag: getSecureEnclaveDeviceIdTag()))
+            .value;
+    if (!tagExists!) {
+      await secureEnclave.generateKeyPair(
+        accessControl: AccessControlModel(
+          password: getSecureEnclavePassword(),
+          options: [
+            AccessControlOption.applicationPassword,
+            AccessControlOption.privateKeyUsage,
+          ],
+          tag: getSecureEnclaveDeviceIdTag(),
+        ),
+      );
+    }
+
+    final publicIdBase64 =
+        await secureEnclave.getPublicKey(tag: getSecureEnclaveDeviceIdTag());
+    mobileDeviceId = publicIdBase64.value!;
   } catch (ex) {
-    print("Unable to get device ID");
+    throw Exception('Error getting device id: $ex');
   }
-  return mobile_device_id;
+  return mobileDeviceId;
 }
