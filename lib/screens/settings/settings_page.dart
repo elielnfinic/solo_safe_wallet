@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:secure_enclave/secure_enclave.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:solosafe/providers/password.dart';
 import 'package:solosafe/routes/app_routes.dart'; // For app version
 
 class SettingsPage extends StatefulWidget {
@@ -118,6 +120,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 prefs.remove('private_key');
                 prefs.remove('public_key');
                 prefs.remove('mnemonic');
+                final secureEnclave = SecureEnclave();
+                secureEnclave.removeKey(getSecureEnclaveDeviceIdTag());
+                secureEnclave.removeKey(getSecureEnclaveKeyTag());
                 // Navigate to the start auth page remove all history so that the user can't go back
                 if (context.mounted) {
                   Navigator.pushNamedAndRemoveUntil(

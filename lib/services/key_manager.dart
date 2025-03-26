@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:convert/convert.dart';
 import 'package:secure_enclave/secure_enclave.dart';
+import 'package:solosafe/providers/password.dart';
 import 'package:wallet_kit/wallet_kit.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,8 +13,8 @@ abstract class SoloSafeSecureEnclaveInterface {
 }
 
 class SoloSafeSecureEnclave implements SoloSafeSecureEnclaveInterface {
-  final tag = 'keys';
-  final password = 'password';
+  final tag = getSecureEnclaveKeyTag();
+  final password = getSecureEnclavePassword();
   SecureEnclave? secureEnclave;
 
   addEnclaveTag() async {
@@ -131,4 +132,9 @@ Future<(String, String)> getDecryptedPublicKeys() async{
   final publicKey = await solosafeSecureEnclave.decryptValue(encryptedPublicKey);
   final strkAddress = await solosafeSecureEnclave.decryptValue(encryptedStrkAddress);
   return (publicKey, strkAddress);
+}
+
+Future<String> getEncryptedPrivateKey() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getString('privateKey') ?? '';
 }
